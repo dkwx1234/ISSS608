@@ -1,7 +1,7 @@
 ---
 title: "About this site"
 description: |
-  Built mainly for submission of assignments and the like. I know it looks like many other sites, but this one is mine
+  Built mainly for submission of assignments and the like. I know it looks like many other sites, but this one is mine. Here we exploring the data for the VAST challenge 2022 
 ---
 
 ```{r setup, include=FALSE}
