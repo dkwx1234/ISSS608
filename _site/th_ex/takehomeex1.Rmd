@@ -5,12 +5,14 @@ author:
 date: April 24, 2022
 
 description: |
-  We study a sample of 1011 residents from Engagement, Ohio USA. The information collected is as follows: participantId: unique ID assigned to each participant.                 householdSize: the number of people in the participant’s household
-              haveKids: whether there are children living in the participant’s household
-              age: participant’s age in years at the start of the study
-              educationLevel: the participant’s educ2ation level, namely Low, HighSchoolorCollege, Bachelors or Graduate
-              interestGroup: a char representing the participant’s stated primary interest,A, B, C, D, E, F, G, H, I, J.
-              joviality: a value ranging from 0 to 1 indicating the participant’s overall happiness level at the start of the study.
+  We study a sample of 1011 residents from Engagement, Ohio USA. The information collected is as follows: 
+  participantId: unique ID assigned to each participant.                 
+  householdSize: the number of people in the participant’s household
+  haveKids: whether there are children living in the participant’s household
+  age: participant’s age in years at the start of the study
+  educationLevel: the participant’s educ2ation level, namely Low, HighSchoolorCollege, Bachelors or Graduate
+  interestGroup: a char representing the participant’s stated primary interest-A, B, C, D, E, F, G, H, I, J.
+  joviality: a value ranging from 0 to 1 indicating the participant’s overall happiness level at the start of the study.
 
 
 
