@@ -1,7 +1,7 @@
 ---
 title: "About this site"
 description: |
-  Some additional details about the website
+  Built mainly for submission of assignments and the like. I know it looks like many other sites, but this one is mine
 ---
 
 ```{r setup, include=FALSE}
