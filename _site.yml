@@ -1,0 +1,30 @@
+name: "Overall Landing Page"
+title: "Participants in Engagement Ohio"
+description: |
+  Participants in Engagement Ohio
+output_dir: "_site"
+navbar:
+  right:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
+  left:
+    - text: "Dataviz Makeover"
+      menu:
+      - text: "Dataviz Makeover1"
+        href: "Dataviz1"
+      - text: "Dataviz Makeover 2"
+        href: "Dataviz2"
+    - text: "Take Home Assignments"
+      menu:
+      - text: "Take Home Assignment 1"
+        href: Takehome1.html
+        
+      - text: "Take Home Assignment 2 (Akan Datang)"  
+      - text: "Take Home Assignment 3 (Akan Datang)"
+      - text: "Take Home Assignment 4 (Akan Datang)"
+      - text: "Take Home Assignment 5 (Akan Datang)"
+      - text: "Take Home Assignment 6 (Akan Datang)"
+      
+output: distill::distill_article
