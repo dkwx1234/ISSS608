@@ -49,6 +49,7 @@ We will endeavor to find the coorelation between some of these demographic chara
 
 ## Loading of packages
 The packages required are ggplot2, readr and dplyr. These are all captured in the package *tidyverse*, which we will load using the below script:
+
 ```{r}
 packages = c('tidyverse')
 
@@ -63,25 +64,98 @@ library(patchwork)
 ```
 ## Importing data
 We place the source file *Participants.csv* in a local data folder and use the *read_csv* function from the **readr** package and save it as *participants* using the following code chunk:
+
+```{r} participants <- read_csv("Data/Participants.csv")
+glimpse(participants)
 ```
 
+We find that the data consists of 1011 entries of 7 fields.
 
+## Preliminary analysis
+To have a general understand of the data we have and what might have coorelations, we develop plots of: 
+1) Household size
+2) Age distribution
+3) Presence of kids
+4) Education level
+5) Interest
+6) Distribution of happiness
 
-
-#   Data Preparation and tidying
-The data is imported from a local copy of the file *Participants.csv* using the function `read_csv` from the **readr** package, then inspected using the `str()` function using the below code:
-
+This is done with the *geom_bar()* function in the **ggplot2 package**
 ```{r}
-Participant_data <- read_csv("Data/Participants.csv")
-str(Participant_data)
+p_householdsize <- ggplot(data = participants,
+       aes(x = householdSize))+
+  geom_bar(color="grey25", 
+           fill="grey90") +
+  ggtitle("Household Sizes")
+
+p_havekids <- ggplot(data=participants, 
+             aes(x = haveKids)) +
+  geom_bar(color="grey25", 
+           fill="grey90") + 
+  ggtitle("Distribution of Kids")
+
+p_age <- ggplot(data=participants, 
+             aes(x = age)) +
+  geom_histogram(boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  coord_cartesian(xlim=c(16, 61)) +
+  ggtitle("Age Distribution")
+
+p_edu <- ggplot(data=participants, 
+             aes(x = educationLevel)) +
+  geom_bar(boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  ggtitle("Distribution of Education Level")
+
+p_interest <- ggplot(data=participants, 
+             aes(x = interestGroup)) +
+  geom_bar(boundary = 100,
+                 color="grey25", 
+                 fill="grey90") +
+  ggtitle("Distribution of Interests")
+
+p_joviality<- ggplot(data=participants, 
+             aes(x = joviality)) +
+  geom_density() +
+  ggtitle("Distribution of Happiness")
+
+(p_householdsize/p_havekids/p_interest)|(p_age/p_edu/p_joviality)
 ```
 
-The columns were renamed more intuitively, and to fit modern sensibilities, from ‘ID’, ‘CLASS’, ‘GENDER’, ‘RACE’, ‘ENGLISH’, ‘MATH’ and ‘SCIENCE’ to ‘STUDENT_ID’, ‘CLASS’, ‘SEX’, ‘RACE’, ‘ENGLISH_SCORE’, ‘MATH_SCORE’ and ‘SCIENCE_SCORE’ respectively using the code below:
- 
+This preliminary look shows that most do not have kids, with about half the population being high school or college educated. There is no clearly dominant interest or level of happiness. Age seems to have alternating bands, which could suggest a seasonality to the birthrates of individuals in the area.
+
+
+## Data processing
+To facilitate clarity and good house keeping, we renamed the columns to "Participant_ID, Household_Size,"Kids", "Age", Education", "Interest" and "Joviality" using the code below:
+
 ```{r}
  Participant_data <- Participant_data %>% rename(`Participant_ID` = `participantId`,`Household_Size` = `householdSize`, `Kids` = `haveKids`,`Age`=`age`,`Education` =`educationLevel` , `Interest`= `interestGroup`, `Joviality`=`joviality`)
 colnames(Participant_data)
 ```
+
+Also, in order to create clean breaks in the ages, we binned the ages by significant legal milestones (Ages 18 and 21) and subsequently evenly by 5 year intervals from age 25. We did this with the *mutate* function with the following code chunk:
+```{r}
+participants_age <- participants %>%
+  mutate(age_group = cut(age, breaks = c(18,21,25,30,35,40,45,50,55,60)))
+```
+
+## Main Analysis
+### Household size
+
+We run the below code chunk to provide insight into the status of kids in the various households:
+
+
+```{r}
+ggplot(data = participants_age,
+       aes(x = Household_Size, fill = Kids))+
+  geom_bar()+
+  ggtitle("Household sizes with (or without) kids")
+```
+
+Interestingly enough, there are no households with less than 3 people with kids. This could suggest a low presence of single parenthood in Engagement. A potential leading indicator of lower rates of deliquency compared to places with a higher presence of single parent households.
+
 
 #   Visualizations
 

@@ -2609,10 +2609,9 @@ the <strong>readr</strong> package, then inspected using the
   .. )
  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt; </code></pre>
 </div>
-<p>The columns were renamed more intuitively, and to fit modern
-sensibilities, from ‘ID’, ‘CLASS’, ‘GENDER’, ‘RACE’, ‘ENGLISH’, ‘MATH’
-and ‘SCIENCE’ to ‘STUDENT_ID’, ‘CLASS’, ‘SEX’, ‘RACE’, ‘ENGLISH_SCORE’,
-‘MATH_SCORE’ and ‘SCIENCE_SCORE’ respectively using the code below:</p>
+<p>To facilitate clarity and good house keeping, we renamed the columns
+to “Participant_ID, Household_Size,”Kids”, “Age”, Education”, “Interest”
+and “Joviality” using the code below:</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"> <span class="va">Participant_data</span> <span class="op">&lt;-</span> <span class="va">Participant_data</span> <span class="op">%&gt;%</span> <span class="fu">rename</span><span class="op">(</span>`Participant_ID` <span class="op">=</span> <span class="va">`participantId`</span>,`Household_Size` <span class="op">=</span> <span class="va">`householdSize`</span>, `Kids` <span class="op">=</span> <span class="va">`haveKids`</span>,`Age`<span class="op">=</span><span class="va">`age`</span>,`Education` <span class="op">=</span><span class="va">`educationLevel`</span> , `Interest`<span class="op">=</span> <span class="va">`interestGroup`</span>, `Joviality`<span class="op">=</span><span class="va">`joviality`</span><span class="op">)</span>
