@@ -1,0 +1,131 @@
+---
+title: "Take Home Exercise #2: Feedback on Peer's Take Home exercise #1"
+author:
+  - name: David Kwok
+date: May 1, 2022
+
+description: |
+  Feedback and redone LIU Zhenglin's a takehome exercise. 
+
+
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+#   Feedback
+##  Positives   
+ There is the addition of a preliminary analysis done on the raw data to understand the details and possible constraints of data. This also scopes out possible errors in formatting, clarity and potential data cleaning needed. 
+ Many different plots are used to provide different prospectives to the end users. 
+ There is good use of colours in the plots which ensure clear segregation of different components of data.
+
+## Room for improvment
+The overview of the study is abit brief and lacks an introduction to the data captured such as origin or background behind the data.
+With 6 different plots provided, there is a significant chance of 'paralysis by analysis'
+Constraints of the data could have been called out.
+
+# David's Take on Zhenglin's Exercise
+##  Overview
+We have collected data from the city of Engagement, Ohio USA.
+The information collected is as follows: 
+  
+  **participantId**: unique ID assigned to each participant.                 
+  
+  **householdSize**: the number of people in the participant’s household
+  
+  **haveKids**: whether there are children living in the participant’s household
+  
+  **age**: participant’s age in years at the start of the study
+  
+  **educationLevel**: the participant’s educ2ation level, namely Low, HighSchoolorCollege, Bachelors or Graduate
+  
+  **interestGroup**: a char representing the participant’s stated primary interest-A, B, C, D, E, F, G, H, I, J.
+  
+  **joviality**: a value ranging from 0 to 1 indicating the participant’s overall happiness level at the start of the study.
+ 
+We will endeavor to find the coorelation between some of these demographic characteristics and joviality.
+
+## Loading of packages
+The packages required are ggplot2, readr and dplyr. These are all captured in the package *tidyverse*, which we will load using the below script:
+```{r}
+packages = c('tidyverse')
+
+for (p in packages){
+  if(!require(p, character.only = T)){
+    install.package(p)
+  }
+  library(p, character.only = T)
+}
+
+library(patchwork)
+```
+## Importing data
+We place the source file *Participants.csv* in a local data folder and use the *read_csv* function from the **readr** package and save it as *participants* using the following code chunk:
+```
+
+
+
+
+#   Data Preparation and tidying
+The data is imported from a local copy of the file *Participants.csv* using the function `read_csv` from the **readr** package, then inspected using the `str()` function using the below code:
+
+```{r}
+Participant_data <- read_csv("Data/Participants.csv")
+str(Participant_data)
+```
+
+The columns were renamed more intuitively, and to fit modern sensibilities, from ‘ID’, ‘CLASS’, ‘GENDER’, ‘RACE’, ‘ENGLISH’, ‘MATH’ and ‘SCIENCE’ to ‘STUDENT_ID’, ‘CLASS’, ‘SEX’, ‘RACE’, ‘ENGLISH_SCORE’, ‘MATH_SCORE’ and ‘SCIENCE_SCORE’ respectively using the code below:
+ 
+```{r}
+ Participant_data <- Participant_data %>% rename(`Participant_ID` = `participantId`,`Household_Size` = `householdSize`, `Kids` = `haveKids`,`Age`=`age`,`Education` =`educationLevel` , `Interest`= `interestGroup`, `Joviality`=`joviality`)
+colnames(Participant_data)
+```
+
+#   Visualizations
+
+We proceed to do preliminary analysis on the data provided by trying to establish demographic details and some things that impact the happiness (or joviality) of the participants
+##    Demographic Details
+
+We endevor to identify key demographics of the population, we plot a set of charts illustrating the number of people with a given age with a given level of education. We also try to identify the interest in the respective activities broken down by education level. Results are as follows:
+
+```{r}
+ggplot(data=Participant_data, 
+       aes(x=Age)) +
+    geom_histogram(bins=20) +
+facet_wrap(~ Education)
+
+```
+The above charts shows a higher incidence of high school or college grads and a significant blip in the population around age 30. Also , there is a relatively small number of lowly educated people.
+
+```{r}
+ggplot(data=Participant_data, aes(x=Education)) + 
+     geom_bar()+facet_wrap(~ Interest) +
+coord_flip()
+```
+The above charts show a even distribution of high school or college grads across the activities. There is a notable uptick in interest by those with a bachelors in activity D and J. There is also a low interest in activity D and F by the lowly educated. Graduates seem more interested in activity G. 
+Noteworthy is there is no one activity that holds a more than 20% share of interest from any single education level, so interests seems very balanced.
+
+##    Happiness by Interest Group and Education
+We proceed to see the happiness level of the sample. We are doing this through box plots of Joviality against activity, diagrammed by education level to try comparing averages and extremes (100th and 1st percentiles).
+
+```{r}
+ggplot(data=Participant_data, aes(y = Joviality, x= Interest))+ 
+ geom_boxplot() +
+ facet_grid(~Education)
+```
+The Bachelors educated have the largest inter-quartile distribution for most of the activities. They also have a lower happiness for the typical user for activity J.
+Graduates are quite unhappy in activity A.
+High school or college tend to have a very even inter-quartile distribution independent of activity.
+We find that the happiness of the low education group is very heavily dependent on the activity. F is by far the worst performing group, with G having a notably low rate of happiness for the typical user. For interest A we notice a distinctly poor 2nd quartile performance.
+
+##    Happiness by education
+
+We explore the impact or possible coorelation of education with happiness through charting a box plot of Joviality against education
+
+```{r}
+ggplot(data=Participant_data, aes(y = Joviality, x= Education))+
+     geom_boxplot()
+```
+We find that the typical low education is less than 0.05 unhappier than the best scoring graduates. There appears to be a slight coorelation between higher education and happiness.
