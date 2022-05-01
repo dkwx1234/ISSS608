@@ -48,10 +48,10 @@ The information collected is as follows:
 We will endeavor to find the coorelation between some of these demographic characteristics and joviality.
 
 ## Loading of packages
-The packages required are ggplot2, readr and dplyr. These are all captured in the package *tidyverse*, which we will load using the below script:
+The packages required are ggplot2, readr and dplyr. These are all captured in the package *tidyverse*, *dplyr* and the **devtool** *introdataviz*, which we will load using the below script:
 
 ```{r}
-packages = c('tidyverse')
+packages = c('tidyverse','dplyr')
 
 for (p in packages){
   if(!require(p, character.only = T)){
@@ -61,11 +61,15 @@ for (p in packages){
 }
 
 library(patchwork)
+install.packages("devtools")
+devtools::install_github("psyteachr/introdataviz")
+library(introdataviz)
 ```
 ## Importing data
 We place the source file *Participants.csv* in a local data folder and use the *read_csv* function from the **readr** package and save it as *participants* using the following code chunk:
 
-```{r} participants <- read_csv("Data/Participants.csv")
+```{r} 
+participants <- read_csv("Data/Participants.csv")
 glimpse(participants)
 ```
 
@@ -128,78 +132,67 @@ This preliminary look shows that most do not have kids, with about half the popu
 
 
 ## Data processing
-To facilitate clarity and good house keeping, we renamed the columns to "Participant_ID, Household_Size,"Kids", "Age", Education", "Interest" and "Joviality" using the code below:
+To facilitate clarity and good house keeping, we renamed the columns to "Participant_ID", "Household_Size","Kids", "Age", "Education", "Interest" and "Joviality" using the code below:
 
 ```{r}
- Participant_data <- Participant_data %>% rename(`Participant_ID` = `participantId`,`Household_Size` = `householdSize`, `Kids` = `haveKids`,`Age`=`age`,`Education` =`educationLevel` , `Interest`= `interestGroup`, `Joviality`=`joviality`)
-colnames(Participant_data)
+participants <- participants %>%rename('Participant_ID' =  'participantId','Household_Size' = 'householdSize', 'Kids' = 'haveKids','Age'='age','Education' ='educationLevel' , 'Interest'= 'interestGroup', 'Joviality'='joviality')
+
+colnames(participants)
 ```
 
-Also, in order to create clean breaks in the ages, we binned the ages by significant legal milestones (Ages 18 and 21) and subsequently evenly by 5 year intervals from age 25. We did this with the *mutate* function with the following code chunk:
+Also, in order to create clean breaks in the ages, we binned the ages by significant legal milestones (Age 21) and subsequently evenly by 5 year intervals from age 25. We did this with the *mutate* function with the following code chunk:
 ```{r}
-participants_age <- participants %>%
-  mutate(age_group = cut(age, breaks = c(18,21,25,30,35,40,45,50,55,60)))
+participants_Age <- participants %>%
+  mutate(Age_group = cut(Age, breaks = c(17,21,25,30,35,40,45,50,55,60)))
 ```
 
 ## Main Analysis
-### Household size
+### Household size and kids
 
 We run the below code chunk to provide insight into the status of kids in the various households:
 
 
 ```{r}
-ggplot(data = participants_age,
+ggplot(data = participants_Age,
        aes(x = Household_Size, fill = Kids))+
   geom_bar()+
   ggtitle("Household sizes with (or without) kids")
 ```
 
-Interestingly enough, there are no households with less than 3 people with kids. This could suggest a low presence of single parenthood in Engagement. A potential leading indicator of lower rates of deliquency compared to places with a higher presence of single parent households.
+Interestingly enough, there are no households with less than 3 people with kids. This could suggest a low presence of single parenthood in Engagement. A potential leading indicator of lower rates of delinquency (with an assumed lower happiness) compared to places with a higher presence of single parent households.
 
-
-#   Visualizations
-
-We proceed to do preliminary analysis on the data provided by trying to establish demographic details and some things that impact the happiness (or joviality) of the participants
-##    Demographic Details
-
-We endevor to identify key demographics of the population, we plot a set of charts illustrating the number of people with a given age with a given level of education. We also try to identify the interest in the respective activities broken down by education level. Results are as follows:
+We also endeavor to understand happiness against household sizes by plotting the happiness against household size.
 
 ```{r}
-ggplot(data=Participant_data, 
-       aes(x=Age)) +
-    geom_histogram(bins=20) +
-facet_wrap(~ Education)
-
+ggplot(data=participants, 
+       aes(y = Joviality))+ 
+ geom_boxplot()+
+  facet_wrap(~ Household_Size)+
+  ggtitle("Happiness by household size")
 ```
-The above charts shows a higher incidence of high school or college grads and a significant blip in the population around age 30. Also , there is a relatively small number of lowly educated people.
+Based on this plot, we can see that it seems that living alone tends to correlate with a lower average happiness, having more than 2 does not seem to significantly improve happiness of a typical person.This, when combined with the earlier plot, we can observe that children do not significantly impact happiness.
+
+### Household size, age and parental status
+It stands to reason that the observations in the previous section are could be a result of larger households tending to have older people who are at a more stable (and hence happier)stage of life. We investigate this with the overlaying of age against household sizes.
 
 ```{r}
-ggplot(data=Participant_data, aes(x=Education)) + 
-     geom_bar()+facet_wrap(~ Interest) +
-coord_flip()
+ggplot(data = participants_Age,
+       aes(x = Age_group))+
+ geom_bar(width=0.5) +
+  facet_wrap(~Household_Size)+
+  theme(axis.text.x = element_text(angle = 90))
+ ggtitle("Household size by Age")
 ```
-The above charts show a even distribution of high school or college grads across the activities. There is a notable uptick in interest by those with a bachelors in activity D and J. There is also a low interest in activity D and F by the lowly educated. Graduates seem more interested in activity G. 
-Noteworthy is there is no one activity that holds a more than 20% share of interest from any single education level, so interests seems very balanced.
 
-##    Happiness by Interest Group and Education
-We proceed to see the happiness level of the sample. We are doing this through box plots of Joviality against activity, diagrammed by education level to try comparing averages and extremes (100th and 1st percentiles).
-
+We find that our earlier hypothesis is not accurate. We also notice that there is a significant frequency of young parents due to the comparable number of 17 to 25 year olds with kids. 
+We then proceed to see if happiness potentially has any influence by age and presence of kids with a box and violin plot from the below code chunk:
 ```{r}
-ggplot(data=Participant_data, aes(y = Joviality, x= Interest))+ 
- geom_boxplot() +
- facet_grid(~Education)
+ggplot(participants, aes(x = Age_group, y = Joviality, fill = Kids)) +
+  introdataviz::geom_split_violin(alpha = .4, trim = FALSE) +
+  geom_boxplot(width = .2, alpha = .6, fatten = NULL, show.legend = FALSE) +
+  stat_summary(fun.data = "mean_se", geom = "pointrange", show.legend = F, 
+               position = position_dodge(.175)) +
+  scale_y_continuous(breaks = seq(0, 1, 0.2), 
+                     limits = c(0, 1)) +
+  scale_fill_brewer(palette = "Dark2", name = "Have Kids")
 ```
-The Bachelors educated have the largest inter-quartile distribution for most of the activities. They also have a lower happiness for the typical user for activity J.
-Graduates are quite unhappy in activity A.
-High school or college tend to have a very even inter-quartile distribution independent of activity.
-We find that the happiness of the low education group is very heavily dependent on the activity. F is by far the worst performing group, with G having a notably low rate of happiness for the typical user. For interest A we notice a distinctly poor 2nd quartile performance.
-
-##    Happiness by education
-
-We explore the impact or possible coorelation of education with happiness through charting a box plot of Joviality against education
-
-```{r}
-ggplot(data=Participant_data, aes(y = Joviality, x= Education))+
-     geom_boxplot()
-```
-We find that the typical low education is less than 0.05 unhappier than the best scoring graduates. There appears to be a slight coorelation between higher education and happiness.
