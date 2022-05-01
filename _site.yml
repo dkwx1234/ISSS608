@@ -21,6 +21,7 @@ navbar:
       - text: "Take Home Assignment 1"
         href: "th_ex/takehomeex1.html"
       - text: "Take Home Assignment 2 (Akan Datang)"  
+        href: "th_ex/takehomeex2.html"
       - text: "Take Home Assignment 3 (Akan Datang)"
       - text: "Take Home Assignment 4 (Akan Datang)"
       - text: "Take Home Assignment 5 (Akan Datang)"

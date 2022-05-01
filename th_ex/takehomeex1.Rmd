@@ -60,7 +60,7 @@ Participant_data <- read_csv("Data/Participants.csv")
 str(Participant_data)
 ```
 
-To facilitate clarity and good house keeping, we renamed the columns to "Participant_ID, Household_Size,"Kids", "Age", Education", "Interest" and "Joviality" using the code below:
+To facilitate clarity and good house keeping, we renamed the columns to "Participant_ID", "Household_Size","Kids", "Age", "Education", "Interest" and "Joviality" using the code below:
  
 ```{r}
  Participant_data <- Participant_data %>% rename(`Participant_ID` = `participantId`,`Household_Size` = `householdSize`, `Kids` = `haveKids`,`Age`=`age`,`Education` =`educationLevel` , `Interest`= `interestGroup`, `Joviality`=`joviality`)

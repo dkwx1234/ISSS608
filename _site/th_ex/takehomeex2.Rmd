@@ -84,7 +84,6 @@ To have a general understand of the data we have and what might have coorelation
 5) Interest
 6) Distribution of happiness
 
-
 This is done with the *geom_bar()* function in the **ggplot2 package**
 
 ```{r}
@@ -164,7 +163,7 @@ ggplot(data = participants_Age,
 
 Interestingly enough, there are no households with less than 3 people with kids. This could suggest a low presence of single parenthood in Engagement. A potential leading indicator of lower rates of delinquency (with an assumed lower happiness) compared to places with a higher presence of single parent households.
 
-We also endeavor to understand happiness against household sizes by plotting the happiness against household size with the following code chunk:
+We also endeavor to understand happiness against household sizes by plotting the happiness against household size.
 
 ```{r}
 ggplot(data=participants, 
@@ -173,7 +172,6 @@ ggplot(data=participants,
   facet_wrap(~ Household_Size)+
   ggtitle("Happiness by household size")
 ```
-
 Based on this plot, we can see that it seems that living alone tends to correlate with a lower average happiness, having more than 2 does not seem to significantly improve happiness of a typical person.This, when combined with the earlier plot, we can observe that children do not significantly impact happiness.
 
 ### Household size, age and parental status
@@ -210,8 +208,7 @@ Based on our study, the community seems to be of average happiness, a larger sam
 
 More study can also be done on the education status and other factors, which was not covered in the scope of this study.
 
-### Demographic observations
-
+###Demographic observations
 Demographically, it does seem that all children are from households with more than 1 other person. Which seems to be a good indicator of societal health, due to lower potential for single parent households.
 
 Also, there is a noticeable proportion of young parents (ages 17-25) of almost a third of the population of that age group.

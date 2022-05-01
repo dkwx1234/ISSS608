@@ -1,0 +1,11 @@
+```{r}
+packages <- c('tidyverse','rvest','reshape2','ggtern','viridis','ggrepel','CGPfunctions','ggpubr')
+
+for (p in packages){
+  if (!require(p,character.only=T)){
+    install.packages(p)
+  }
+  library(p, character.only=T)
+}
+GDP <- read_csv("data/GDP.csv")
+WorldCountry <- read_csv("data/WorldCountry.csv")
