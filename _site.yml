@@ -16,6 +16,10 @@ navbar:
         href: "Dataviz1"
       - text: "Dataviz Makeover 2"
         href: "Dataviz2"
+    - text: "In Class Exercise"
+      menu:
+      - text: "In Class Exercise"
+        href: "In-class_Ex/In-class_Ex04.html"
     - text: "Take Home Assignments"
       menu:
       - text: "Take Home Assignment 1"
